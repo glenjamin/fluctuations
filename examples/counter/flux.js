@@ -2,9 +2,9 @@ var redux = require('../..');
 
 function copy(a, b) {
   var ret = {};
-  function add(k, v) { ret[k] = v; }
-  Object.keys(a).forEach(add);
-  Object.keys(b).forEach(add);
+  function add(k) { ret[k] = this[k]; }
+  Object.keys(a).forEach(add, a);
+  Object.keys(b).forEach(add, b);
   return ret;
 }
 
@@ -37,13 +37,15 @@ var interceptor = redux.createInterceptor({
   }
 });
 
-var flux = redux.dispatcher();
+var flux = redux.createDispatcher();
 
-flux.intercept(interceptor);
-flux.register('n', store);
+flux.addInterceptor('n', interceptor);
+flux.addStore('n', store);
 
-flux.listen(function(stores) {
-  console.log("%d%s", stores.n.number, stores.n.pending ? ' (pending)' : '');
+flux.listen("logging", function(stores) {
+  console.log("%d%s",
+    stores.n.number,
+    stores.n.pending > 0 ? ' (pending)' : '');
 });
 
 module.exports = flux.dispatch;

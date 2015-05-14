@@ -2,7 +2,7 @@
   "name": "flux-redux",
   "version": "0.1.0",
   "description": "Yet another flux implementation",
-  "main": "index.js",
+  "main": "flux-redux.js",
   "scripts": {
     "test": "echo 'soon'"
   },
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/glenjamin/flux-redux/issues"
   },
-  "homepage": "https://github.com/glenjamin/flux-redux"
+  "homepage": "https://github.com/glenjamin/flux-redux",
+  "dependencies": {
+    "debug": "^2.2.0"
+  }
 }

@@ -53,11 +53,11 @@ var interceptor = redux.createInterceptor({
     }
 });
 
-var flux = redux.dispatcher();
-flux.intercept(interceptor);
-flux.register('stuff', store);
+var flux = redux.createDispatcher();
+flux.addInterceptor('stuff', interceptor);
+flux.addStore('stuff', store);
 
-flux.listen(function(stores) {
+flux.listen("logging", function(stores) {
     console.log(stores);
 });
 ```
