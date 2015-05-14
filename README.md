@@ -26,10 +26,7 @@ npm install flux-redux
 > This is currently speculative.
 
 ```js
-
 var redux = require('flux-redux');
-
-var flux = redux.dispatcher();
 
 var store = redux.createStore(
     function() {
@@ -47,9 +44,7 @@ var store = redux.createStore(
     }
 );
 
-flux.register('stuff', store);
-
-redux.intercept({
+var interceptor = redux.createInterceptor({
     FETCH_MESSAGE: function(dispatch, payload) {
         dispatch("FETCH_MESSAGE_BEGIN");
         setTimeout(function() {
@@ -58,8 +53,11 @@ redux.intercept({
     }
 });
 
+var flux = redux.dispatcher();
+flux.intercept(interceptor);
+flux.register('stuff', store);
+
 flux.listen(function(stores) {
     console.log(stores);
 });
-
 ```
