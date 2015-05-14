@@ -1,0 +1,19 @@
+{
+  "name": "flux-redux",
+  "version": "0.1.0",
+  "description": "Yet another flux implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'soon'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glenjamin/flux-redux.git"
+  },
+  "author": "Glen Mailer <glen@stainlessed.co.uk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/glenjamin/flux-redux/issues"
+  },
+  "homepage": "https://github.com/glenjamin/flux-redux"
+}
