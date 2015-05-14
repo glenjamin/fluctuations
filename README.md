@@ -61,3 +61,15 @@ flux.listen("logging", function(stores) {
     console.log(stores);
 });
 ```
+
+# TODO
+
+* High level tests
+* Low level tests
+* Cycle detection?
+* HMR example
+* Merge current state and new initial generically when doing HMR?
+* Isomorphic example - done-ness?
+* Isomorphic HMR example
+* Benchmarking / profiling
+* Granular subscriptions

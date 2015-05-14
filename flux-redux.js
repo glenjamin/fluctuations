@@ -83,7 +83,6 @@ function createDispatcher() {
     });
   }
 
-
 }
 
 function createStore(initial, handlers) {
@@ -100,6 +99,14 @@ function createInterceptor(handlers) {
 }
 
 
+/**
+ * Call fn for each item in obj.
+ * Stops iterating if fn returns the string "break"
+ *
+ * @param  {object}   obj
+ * @param  {Function} fn(value, key)
+ * @return void
+ */
 function each(obj, fn) {
   Object.keys(obj).some(function(k) {
     if (fn(obj[k], k) === 'break') {
