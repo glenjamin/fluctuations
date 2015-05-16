@@ -12,6 +12,7 @@ Yet another flux implementation
  * Actions as simple data
  * Action interceptors for async stuff
  * No singletons
+ * Easy to use with Immutable.js
  * Easy to run isomorphically
  * Easy to use with hot reloading
 
