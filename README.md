@@ -58,8 +58,8 @@ var flux = redux.createDispatcher();
 flux.addInterceptor('stuff', interceptor);
 flux.addStore('stuff', store);
 
-flux.listen("logging", function(stores) {
-    console.log(stores);
+flux.listen("logging", function() {
+    console.log(flux.get());
 });
 ```
 

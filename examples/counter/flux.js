@@ -42,7 +42,8 @@ var flux = redux.createDispatcher();
 flux.addInterceptor('n', interceptor);
 flux.addStore('n', store);
 
-flux.listen("logging", function(stores) {
+flux.listen("logging", function() {
+  var stores = flux.get();
   console.log("%d%s",
     stores.n.number,
     stores.n.pending > 0 ? ' (pending)' : '');
