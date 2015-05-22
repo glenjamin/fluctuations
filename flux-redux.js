@@ -19,7 +19,8 @@ function createDispatcher() {
 
     dispatch: dispatch,
 
-    listen: listen
+    listen: listen,
+    get: get
   };
 
   function addInterceptor(key, interceptor) {
@@ -79,8 +80,12 @@ function createDispatcher() {
   function notify() {
     debug('Notifying all listeners');
     each(listeners, function(listener) {
-      listener(state);
+      listener();
     });
+  }
+
+  function get() {
+    return state;
   }
 
 }
