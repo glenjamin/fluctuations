@@ -61,6 +61,14 @@ flux.addStore('stuff', store);
 flux.listen("logging", function() {
     console.log(flux.get());
 });
+
+// useful for hot reloading
+flux.replace({
+  stuff: {
+    initial: 'data',
+    number: 5
+  }
+});
 ```
 
 # TODO
