@@ -2,6 +2,8 @@
 
 Yet another flux implementation
 
+[![npm version](https://img.shields.io/npm/v/flux-redux.svg)](https://www.npmjs.com/package/flux-redux) [![Build Status](https://img.shields.io/travis/glenjamin/flux-redux/master.svg)](https://travis-ci.org/glenjamin/flux-redux) ![MIT Licensed](https://img.shields.io/npm/l/flux-redux.svg)
+
 ## Goals
 
  * Simple Implementation
