@@ -4,7 +4,7 @@
   "description": "Yet another flux implementation",
   "main": "flux-redux.js",
   "scripts": {
-    "test": "echo 'soon'"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,11 @@
   "homepage": "https://github.com/glenjamin/flux-redux",
   "dependencies": {
     "debug": "^2.2.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.14.1",
+    "sinon-chai": "^2.7.0"
   }
 }

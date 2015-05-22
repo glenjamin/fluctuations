@@ -24,8 +24,6 @@ npm install flux-redux
 
 ## Usage
 
-> This is currently speculative.
-
 ```js
 var redux = require('flux-redux');
 
