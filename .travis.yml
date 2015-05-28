@@ -5,4 +5,4 @@ node_js:
   - 0.12
   - "iojs"
 script: "npm run travis"
-after_script: "cat ./coverage/coverage.json | ./node_modules/.bin/codecov"
+after_script: "cat ./coverage/lcov.info | ./node_modules/.bin/codecov"
