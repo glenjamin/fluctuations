@@ -37,6 +37,28 @@ describe("flux-redux", function() {
       expect(flux.get().store).to.eql(0);
     });
 
+    it("should merge state from the previous store", function() {
+      flux.dispatch("INC");
+      var store2 = redux.createStore(
+        function() {
+          return 0;
+        }, {});
+      flux.addStore('store', store2);
+      expect(flux.get().store).to.eq(1);
+    });
+
+    it("should use the merge strategy", function() {
+      flux.dispatch("ADD", 4);
+      var store2 = redux.createStore(
+        function() {
+          return 3;
+        }, {}, function(x, y){
+          return x + y;
+        });
+      flux.addStore('store', store2);
+      expect(flux.get().store).to.eq(7);
+    });
+
     it("should call listener after dispatch", function() {
       flux.dispatch("INC");
       expect(listener).to.have.callCount(1);
