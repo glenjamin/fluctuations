@@ -29,7 +29,8 @@ function createDispatcher() {
   }
   function addStore(key, store) {
     stores[key] = store;
-    state[key] = store.initial();
+    state[key] = key in state ?
+      store.merge(store.initial(), state[key]) : store.initial();
   }
 
   function listen(key, listener) {
