@@ -88,6 +88,9 @@ describe("flux-redux", function() {
       flux.dispatch("NOTHING");
       expect(listener).to.have.callCount(0);
     });
+
+    it("should retain state when added again");
+    it("should use optional merge strategy on state when added again");
   });
 
   describe("multiple overlapping stores", function() {
@@ -233,7 +236,6 @@ describe("flux-redux", function() {
   });
 
   describe("state replacement", function() {
-    it("should replace all stores' state");
-    it("should allow custom merge strategy");
+    it("should be removed");
   });
 });
