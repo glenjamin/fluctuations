@@ -61,14 +61,6 @@ flux.addStore('stuff', store);
 flux.listen("logging", function() {
     console.log(flux.get());
 });
-
-// useful for hot reloading
-flux.replace({
-  stuff: {
-    initial: 'data',
-    number: 5
-  }
-});
 ```
 
 # TODO
@@ -76,9 +68,8 @@ flux.replace({
 * High level tests
 * Low level tests
 * Cycle detection?
-* HMR example
-* Merge current state and new initial generically when doing HMR?
 * Isomorphic example - done-ness?
 * Isomorphic HMR example
 * Benchmarking / profiling
 * Granular subscriptions
+* Docs docs docs docs docs

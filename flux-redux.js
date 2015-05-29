@@ -20,8 +20,7 @@ function createDispatcher() {
     dispatch: dispatch,
 
     listen: listen,
-    get: get,
-    replace: replace
+    get: get
   };
 
   function addInterceptor(key, interceptor) {
@@ -88,14 +87,6 @@ function createDispatcher() {
 
   function get() {
     return state;
-  }
-
-  function replace(newState) {
-    Object.keys(state).forEach(function(key) {
-      if (newState[key]) {
-        state[key] = stores[key].merge(state[key], newState[key]);
-      }
-    });
   }
 
 }
