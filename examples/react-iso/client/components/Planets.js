@@ -16,6 +16,7 @@ var Planets = React.createClass({
         <h1>Planets</h1>
         <ul>
           {planets.planets.map(this.renderPlanet)}
+          {planets.morePlanets && <li>loading...</li>}
         </ul>
       </div>
     );

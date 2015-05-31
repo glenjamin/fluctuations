@@ -17,11 +17,12 @@ handlers.planets = (query, dispatch, callback) => {
       return callback();
     }
     planets = planets.concat(body.results);
-    if (!body.next) {
-      dispatch("PLANETS_DATA", planets);
-      return callback();
+    dispatch("PLANETS_DATA", {planets, more: body.next});
+    if (body.next) {
+      swapi({ uri: body.next }, appendResults);
     }
-    swapi({ uri: body.next }, appendResults);
+    callback();
+    callback = () => 0;
   }
 };
 handlers.planet = (id, dispatch, callback) => {
@@ -38,11 +39,13 @@ handlers.planet = (id, dispatch, callback) => {
 exports.store = flux.createStore(
   () => ({
     planets: [],
+    morePlanets: false,
     planet: {}
   }),
   {
-    PLANETS_DATA(state, planets) {
+    PLANETS_DATA(state, {planets, more}) {
       state.planets = planets.map(formatPlanet);
+      state.morePlanets = more;
       return state;
     },
     PLANET_DATA(state, {id, planet}) {
