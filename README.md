@@ -63,6 +63,14 @@ flux.listen("logging", function() {
 });
 ```
 
+# Docs
+
+None yet, for now you'll have to rely on examples:
+
+* [Counter](examples/counter/) - Basic data handling
+* [React Hot](examples/react-hot/) - React w/ hot module reloading and async data fetching
+* [React Isomorphic](examples/react-iso) - React w/ hot module reloading, routing, route-aware async data fetching & (soon) server rendering
+
 # TODO
 
 * High level tests
