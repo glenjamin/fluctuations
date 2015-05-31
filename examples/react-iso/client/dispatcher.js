@@ -21,14 +21,16 @@ if (module.hot) {
 
 var data = require('./data');
 
-var routing = require('./routing');
-
+var routing = require('./stores/routing');
 dispatcher.addInterceptor('routing', routing.interceptor);
 dispatcher.addStore('routing', routing.store);
 
-var swapi = require('./swapi');
+var films = require('./stores/films');
+data.addHandlers(films.handlers);
+dispatcher.addStore('films', films.store);
 
-data.addHandlers(swapi.handlers);
-dispatcher.addStore('swapi', swapi.store);
+var planets = require('./stores/planets');
+data.addHandlers(planets.handlers);
+dispatcher.addStore('planets', planets.store);
 
 module.exports = dispatcher;

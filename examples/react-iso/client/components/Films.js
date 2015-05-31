@@ -2,7 +2,7 @@ var React = require('react');
 
 var Films = React.createClass({
   propTypes: {
-    swapi: React.PropTypes.object
+    films: React.PropTypes.object
   },
   statics: {
     fetchData() {
@@ -10,12 +10,12 @@ var Films = React.createClass({
     }
   },
   render() {
-    var {swapi} = this.props;
+    var {films} = this.props;
     return (
       <div>
         <h1>Films</h1>
         <ul>
-          {swapi.films.map(this.renderFilm)}
+          {films.films.map(this.renderFilm)}
         </ul>
       </div>
     );

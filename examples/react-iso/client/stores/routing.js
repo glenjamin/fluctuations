@@ -3,14 +3,9 @@
 var flux = require('flux-redux');
 var merge = require('deep-extend');
 
-var data = require('./data');
+var data = require('../data');
 
-var routes = require('routes/index')();
-routes.addRoute("/", require('./Home'));
-routes.addRoute("/films", require('./Films'));
-routes.addRoute("/films/:id", require('./Film'));
-routes.addRoute("/planets", require('./Planets'));
-routes.addRoute("*", require('./Error404'));
+var routes = require('../routes');
 
 function route(dispatch, path) {
   var match = routes.match(path);

@@ -1,8 +1,8 @@
 var React = require('react');
 
-var Films = React.createClass({
+var Film = React.createClass({
   propTypes: {
-    swapi: React.PropTypes.object,
+    films: React.PropTypes.object,
     routing: React.PropTypes.object
   },
   statics: {
@@ -11,9 +11,9 @@ var Films = React.createClass({
     }
   },
   render() {
-    var {swapi, routing} = this.props;
+    var {films, routing} = this.props;
     var id = routing.params.id;
-    var film = swapi.film[id] || {};
+    var film = films.film[id] || {};
     return (
       <div>
         <h1>{film.title}</h1>
@@ -23,4 +23,4 @@ var Films = React.createClass({
   }
 });
 
-module.exports = Films;
+module.exports = Film;
