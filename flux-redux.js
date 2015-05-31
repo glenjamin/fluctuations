@@ -48,7 +48,7 @@ function createDispatcher() {
     var intercepted = false;
     each(interceptors, function(interceptor, key) {
       if (interceptor.handlers[action]) {
-        debug("Intercepted %s with interceptor %s", action, key);
+        debug("Intercepted %s with interceptor '%s'", action, key);
         interceptor.handlers[action](dispatchToStores, payload);
         intercepted = true;
         return 'break';
@@ -63,7 +63,7 @@ function createDispatcher() {
     var handled = false;
     each(stores, function(store, key) {
       if (store.handlers[action]) {
-        debug("Dispatching %s to store %s", action, key);
+        debug("Dispatching %s to store '%s'", action, key);
         verbose("State in: %j", state[key]);
         state[key] = store.handlers[action](state[key], payload);
         verbose("State out: %j", state[key]);
@@ -74,7 +74,7 @@ function createDispatcher() {
     if (handled) {
       notify();
     } else {
-      console.warn("Unknown action: %s", action);
+      console.warn("Unknown action: %s", action, payload);
     }
   }
 
