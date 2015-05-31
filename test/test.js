@@ -256,8 +256,4 @@ describe("flux-redux", function() {
     it("should only call first matching interceptor");
     it("should do everything else the same");
   });
-
-  describe("state replacement", function() {
-    it("should be removed");
-  });
 });
