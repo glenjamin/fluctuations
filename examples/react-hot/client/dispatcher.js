@@ -11,12 +11,10 @@ var request = require('browser-request');
  * dispatcher.addStore will use the stores' merge functions
  * when re-adding another store with the same key
  */
-var dispatcher;
+var dispatcher = flux.createDispatcher();
 if (module.hot) {
   if (module.hot.data) {
     dispatcher = module.hot.data.dispatcher;
-  } else {
-    dispatcher = flux.createDispatcher();
   }
   module.hot.accept();
   module.hot.dispose((data) => data.dispatcher = dispatcher);
