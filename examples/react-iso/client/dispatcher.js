@@ -1,6 +1,15 @@
 var flux = require('flux-redux');
 
 /**
+ * To take over from server rendering, we must re-use the data that the
+ * server used, by passing it into the dispatcher init
+ */
+/*global initialStoreData*/
+var state = typeof initialStoreData == 'object' ? initialStoreData : {};
+
+var dispatcher = flux.createDispatcher({state});
+
+/**
  * Hot reloading stores!
  *
  * The trick is to always re-use the `dispatcher` instance
@@ -8,7 +17,6 @@ var flux = require('flux-redux');
  * dispatcher.addStore will use the stores' merge functions
  * when re-adding another store with the same key
  */
-var dispatcher = flux.createDispatcher();
 if (module.hot) {
   if (module.hot.data) {
     dispatcher = module.hot.data.dispatcher;
@@ -16,14 +24,7 @@ if (module.hot) {
   module.hot.accept();
   module.hot.dispose(hot => hot.dispatcher = dispatcher);
 }
-// Server data hydration - this should be in the core lib
-/*global initialStoreData*/
-if (typeof initialStoreData == 'object') {
-  Object.keys(initialStoreData).forEach(k => {
-    dispatcher.addStore(k, {initial: () => initialStoreData[k]});
-    delete initialStoreData[k];
-  });
-}
+
 
 var data = require('./data');
 
