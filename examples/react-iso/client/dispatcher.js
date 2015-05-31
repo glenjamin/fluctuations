@@ -16,6 +16,14 @@ if (module.hot) {
   module.hot.accept();
   module.hot.dispose(hot => hot.dispatcher = dispatcher);
 }
+// Server data hydration - this should be in the core lib
+/*global initialStoreData*/
+if (typeof initialStoreData == 'object') {
+  Object.keys(initialStoreData).forEach(k => {
+    dispatcher.addStore(k, {initial: () => initialStoreData[k]});
+    delete initialStoreData[k];
+  });
+}
 
 var data = require('./data');
 

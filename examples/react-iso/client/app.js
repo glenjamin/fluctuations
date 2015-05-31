@@ -18,11 +18,12 @@ function render() {
   );
 }
 
-setUrlFromLocation();
 window.addEventListener('popstate', setUrlFromLocation);
 function setUrlFromLocation() {
   dispatcher.dispatch("SET_URL", window.location.pathname);
 }
+
+dispatcher.dispatch("INIT_URL", window.location.pathname);
 
 
 if (module.hot) {

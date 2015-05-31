@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
   devtool: '#eval-source-map',
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
+    'webpack-hot-middleware/client',
     'webpack/hot/dev-server',
     './client/app.js'
   ],
@@ -19,7 +19,11 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ],
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['', '.js'],
+    alias: {
+      routes: 'routes/index',
+      request: 'browser-request'
+    }
   },
   module: {
     loaders: [{

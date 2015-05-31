@@ -1,4 +1,4 @@
-var request = require('browser-request');
+var request = require('request');
 
 var swapiBaseUrl = 'http://swapi.co/api/';
 var swapiRequest = request.defaults({ json: true });

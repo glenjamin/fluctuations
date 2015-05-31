@@ -1,4 +1,4 @@
-var routes = require('routes/index')();
+var routes = require('routes')();
 routes.addRoute("/", require('./components/Home'));
 routes.addRoute("/films", require('./components/Films'));
 routes.addRoute("/films/:id", require('./components/Film'));
