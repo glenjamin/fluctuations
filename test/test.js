@@ -256,4 +256,23 @@ describe("flux-redux", function() {
     it("should only call first matching interceptor");
     it("should do everything else the same");
   });
+
+  describe("rehydration", function() {
+    var store;
+    beforeEach(function() {
+      store = redux.createStore(
+        function() { return 0; },
+        { INC: function(n) { return n + 1; } }
+      );
+      flux.addStore('store', store);
+      s.stub(console, 'warn');
+    });
+
+    it("should begin with state if told to", function() {
+      flux.dispatch("INC");
+      var newFlux = redux.createDispatcher({ state: flux.get() });
+      newFlux.addStore('store', store);
+      expect(newFlux.get()).to.deep.eql(flux.get());
+    });
+  });
 });

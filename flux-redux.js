@@ -6,9 +6,11 @@ exports.createDispatcher = createDispatcher;
 exports.createStore = createStore;
 exports.createInterceptor = createInterceptor;
 
-function createDispatcher() {
+function createDispatcher(options) {
 
-  var state = {};
+  options = options || {};
+
+  var state = options.state || {};
   var stores = {};
   var interceptors = {};
   var listeners = {};
