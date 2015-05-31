@@ -6,17 +6,22 @@ var swapi = require('../swapi');
 var handlers = exports.handlers = {};
 
 handlers.planets = (query, dispatch, callback) => {
-  if (query === 'all') {
-    swapi({ pathname: 'planets/' }, (err, res, body) => {
-      if (err) {
-        dispatch("PLANETS_ERROR", err);
-        return callback();
-      }
-      dispatch("PLANETS_DATA", body);
-      return callback();
-    });
-  } else {
+  if (query !== 'all') {
     return callback();
+  }
+  var planets = [];
+  swapi({ pathname: 'planets/' }, appendResults);
+  function appendResults(err, res, body) {
+    if (err) {
+      dispatch("PLANETS_ERROR", err);
+      return callback();
+    }
+    planets = planets.concat(body.results);
+    if (!body.next) {
+      dispatch("PLANETS_DATA", planets);
+      return callback();
+    }
+    swapi({ uri: body.next }, appendResults);
   }
 };
 handlers.planet = (id, dispatch, callback) => {
@@ -37,7 +42,7 @@ exports.store = flux.createStore(
   }),
   {
     PLANETS_DATA(state, planets) {
-      state.planets = planets.results.map(formatPlanet);
+      state.planets = planets.map(formatPlanet);
       return state;
     },
     PLANET_DATA(state, {id, planet}) {
