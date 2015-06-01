@@ -1,4 +1,4 @@
-var flux = require('flux-redux');
+var flux = require('fluctuations');
 
 /**
  * To take over from server rendering, we must re-use the data that the

@@ -1,4 +1,4 @@
-var flux = require('flux-redux');
+var flux = require('fluctuations');
 
 var merge = require('deep-extend');
 var request = require('browser-request');

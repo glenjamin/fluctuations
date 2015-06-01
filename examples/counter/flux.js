@@ -1,4 +1,4 @@
-var redux = require('../..');
+var fluctuations = require('../..');
 
 function copy(a, b) {
   var ret = {};
@@ -8,7 +8,7 @@ function copy(a, b) {
   return ret;
 }
 
-var store = redux.createStore(
+var store = fluctuations.createStore(
   function() {
     return { number: 0, pending: 0 };
   },
@@ -28,7 +28,7 @@ var store = redux.createStore(
   }
 );
 
-var interceptor = redux.createInterceptor({
+var interceptor = fluctuations.createInterceptor({
   SLOW_INC: function(dispatch, payload) {
     dispatch("INC_WAIT");
     setTimeout(function() {
@@ -37,7 +37,7 @@ var interceptor = redux.createInterceptor({
   }
 });
 
-var flux = redux.createDispatcher();
+var flux = fluctuations.createDispatcher();
 
 flux.addInterceptor('n', interceptor);
 flux.addStore('n', store);

@@ -1,8 +1,10 @@
-# flux-redux
+# fluctuations
 
 Yet another flux implementation
 
-[![npm version](https://img.shields.io/npm/v/flux-redux.svg)](https://www.npmjs.com/package/flux-redux) [![Build Status](https://img.shields.io/travis/glenjamin/flux-redux/master.svg)](https://travis-ci.org/glenjamin/flux-redux) [![Coverage Status](https://coveralls.io/repos/glenjamin/flux-redux/badge.svg?branch=master)](https://coveralls.io/r/glenjamin/flux-redux?branch=master) ![MIT Licensed](https://img.shields.io/npm/l/flux-redux.svg)
+Formerly known as `flux-redux`.
+
+[![npm version](https://img.shields.io/npm/v/fluctuations.svg)](https://www.npmjs.com/package/fluctuations) [![Build Status](https://img.shields.io/travis/glenjamin/fluctuations/master.svg)](https://travis-ci.org/glenjamin/fluctuations) [![Coverage Status](https://coveralls.io/repos/glenjamin/fluctuations/badge.svg?branch=master)](https://coveralls.io/r/glenjamin/fluctuations?branch=master) ![MIT Licensed](https://img.shields.io/npm/l/fluctuations.svg)
 
 ## Goals
 
@@ -21,15 +23,15 @@ Yet another flux implementation
 ## Install
 
 ```sh
-npm install flux-redux
+npm install fluctuations
 ```
 
 ## Usage
 
 ```js
-var redux = require('flux-redux');
+var fluctuations = require('fluctuations');
 
-var store = redux.createStore(
+var store = fluctuations.createStore(
     function() {
         return { initial: 'data', number: 0 };
     },
@@ -45,7 +47,7 @@ var store = redux.createStore(
     }
 );
 
-var interceptor = redux.createInterceptor({
+var interceptor = fluctuations.createInterceptor({
     FETCH_MESSAGE: function(dispatch, payload) {
         dispatch("FETCH_MESSAGE_BEGIN");
         setTimeout(function() {
@@ -54,7 +56,7 @@ var interceptor = redux.createInterceptor({
     }
 });
 
-var flux = redux.createDispatcher();
+var flux = fluctuations.createDispatcher();
 flux.addInterceptor('stuff', interceptor);
 flux.addStore('stuff', store);
 

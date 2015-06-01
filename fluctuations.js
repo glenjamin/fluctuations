@@ -1,5 +1,5 @@
-var debug = require('debug')('flux-redux');
-var verbose = require('debug')('flux-redux:verbose');
+var debug = require('debug')('fluctuations');
+var verbose = require('debug')('fluctuations:verbose');
 
 exports.createDispatcher = createDispatcher;
 

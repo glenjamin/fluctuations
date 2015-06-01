@@ -1,5 +1,5 @@
 {
-  "name": "flux-redux-example-react-hot",
+  "name": "fluctuations-example-react-hot",
   "version": "1.0.0",
   "private": true,
   "description": "React example",
@@ -15,7 +15,7 @@
     "eslint": "^0.21.2",
     "eslint-plugin-no-class": "^0.1.0",
     "eslint-plugin-react": "^2.3.0",
-    "flux-redux": "file:../..",
+    "fluctuations": "file:../..",
     "node-libs-browser": "^0.5.2",
     "react": "^0.13.3",
     "react-hot-loader": "^1.2.7",

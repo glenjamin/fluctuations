@@ -5,14 +5,14 @@ var chai = require('chai');
 chai.use(require('sinon-chai'));
 var expect = chai.expect;
 
-var redux = require('../');
+var fluctuations = require('../');
 
-describe("flux-redux", function() {
+describe("fluctuations", function() {
   var flux, listener, s;
   beforeEach(function() {
     s = sinon.sandbox.create();
     listener = s.spy();
-    flux = redux.createDispatcher();
+    flux = fluctuations.createDispatcher();
     flux.listen('listener', listener);
   });
   afterEach(function() {
@@ -21,7 +21,7 @@ describe("flux-redux", function() {
 
   describe("1 store", function() {
     beforeEach(function() {
-      var store = redux.createStore(
+      var store = fluctuations.createStore(
         function() { return 0; },
         {
           INC: function(n) { return n + 1; },
@@ -39,7 +39,7 @@ describe("flux-redux", function() {
 
     it("should merge state from the previous store", function() {
       flux.dispatch("INC");
-      var store2 = redux.createStore(
+      var store2 = fluctuations.createStore(
         function() {
           return 0;
         }, {});
@@ -49,7 +49,7 @@ describe("flux-redux", function() {
 
     it("should use the merge strategy", function() {
       flux.dispatch("ADD", 4);
-      var store2 = redux.createStore(
+      var store2 = fluctuations.createStore(
         function() {
           return 3;
         }, {}, function(x, y){
@@ -117,14 +117,14 @@ describe("flux-redux", function() {
 
   describe("multiple overlapping stores", function() {
     beforeEach(function() {
-      flux.addStore('a', redux.createStore(
+      flux.addStore('a', fluctuations.createStore(
         function() { return -10; },
         {
           BUMP: function(n) { return n + 1; },
           JUMP: function(n) { return n + 10; }
         }
       ));
-      flux.addStore('b', redux.createStore(
+      flux.addStore('b', fluctuations.createStore(
         function() { return 10; },
         {
           BUMP: function(n) { return n - 1; },
@@ -191,7 +191,7 @@ describe("flux-redux", function() {
     beforeEach(function() {
       interceptions = [];
       storeInc = s.spy(function(n) { return n + 1; });
-      flux.addStore('n', redux.createStore(
+      flux.addStore('n', fluctuations.createStore(
         function() { return 0; },
         {
           QUICK_INC: function(n) { return n + 1; },
@@ -200,7 +200,7 @@ describe("flux-redux", function() {
           END_INC: function(n) { return n + 0.9; }
         }
       ));
-      flux.addInterceptor('slow', redux.createInterceptor({
+      flux.addInterceptor('slow', fluctuations.createInterceptor({
         INC: function(dispatch) {
           dispatch("START_INC");
         },
@@ -260,7 +260,7 @@ describe("flux-redux", function() {
   describe("rehydration", function() {
     var store;
     beforeEach(function() {
-      store = redux.createStore(
+      store = fluctuations.createStore(
         function() { return 0; },
         { INC: function(n) { return n + 1; } }
       );
@@ -270,7 +270,7 @@ describe("flux-redux", function() {
 
     it("should begin with state if told to", function() {
       flux.dispatch("INC");
-      var newFlux = redux.createDispatcher({ state: flux.get() });
+      var newFlux = fluctuations.createDispatcher({ state: flux.get() });
       newFlux.addStore('store', store);
       expect(newFlux.get()).to.deep.eql(flux.get());
     });
