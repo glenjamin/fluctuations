@@ -196,6 +196,7 @@ describe("fluctuations", function() {
         {
           QUICK_INC: function(n) { return n + 1; },
           INC: storeInc,
+          SUB: function(n, i) { return n - i; },
           START_INC: function(n) { return n + 0.1; },
           END_INC: function(n) { return n + 0.9; }
         }
@@ -203,6 +204,18 @@ describe("fluctuations", function() {
       flux.addInterceptor('slow', fluctuations.createInterceptor({
         INC: function(dispatch) {
           dispatch("START_INC");
+        },
+        ADD: function(dispatch, n) {
+          while (n--) dispatch("INC");
+        },
+        SUB5: function(dispatch) {
+          dispatch("SUB", 5);
+        },
+        AT_LEAST: function(dispatcher, n) {
+          if (n > dispatcher.state.n) {
+            var i = n - dispatcher.state.n;
+            while (i--) dispatcher.dispatch("INC");
+          }
         },
         HIJACK: function(dispatch) {
           interceptions.push(dispatch);
@@ -248,8 +261,26 @@ describe("fluctuations", function() {
       });
     });
 
-    it("should receive payloads in interceptors");
-    it("should allow interceptors to dispatch payloads to stores");
+    it("should receive payloads in interceptors", function() {
+      flux.dispatch("ADD", 5);
+      expect(flux.get().n).to.eql(5);
+      expect(storeInc).to.have.callCount(5);
+    });
+
+    it("should allow interceptors to dispatch payloads to stores", function() {
+      flux.dispatch("SUB5");
+      expect(flux.get().n).to.eql(-5);
+    });
+
+    it("should allow interceptors to read state", function() {
+      flux.dispatch("AT_LEAST", 3);
+      expect(flux.get().n).to.eql(3);
+      expect(storeInc).to.have.callCount(3);
+      flux.dispatch("SUB5");
+      flux.dispatch("AT_LEAST", 3);
+      expect(flux.get().n).to.eql(3);
+      expect(storeInc).to.have.callCount(8);
+    });
   });
 
   describe("multiple overlapping interceptors", function() {

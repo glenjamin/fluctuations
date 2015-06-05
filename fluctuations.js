@@ -15,16 +15,6 @@ function createDispatcher(options) {
   var interceptors = {};
   var listeners = {};
 
-  return {
-    addInterceptor: addInterceptor,
-    addStore: addStore,
-
-    dispatch: dispatch,
-
-    listen: listen,
-    get: get
-  };
-
   function addInterceptor(key, interceptor) {
     interceptors[key] = interceptor;
   }
@@ -48,6 +38,7 @@ function createDispatcher(options) {
   function dispatchToInterceptors(action, payload) {
     debug("Dispatching %s to interceptors", action);
     var intercepted = false;
+    dispatchToStores.state = get();
     each(interceptors, function(interceptor, key) {
       if (interceptor.handlers[action]) {
         debug("Intercepted %s with interceptor '%s'", action, key);
@@ -79,6 +70,8 @@ function createDispatcher(options) {
       console.warn("Unknown action: %s", action, payload);
     }
   }
+  dispatchToStores.dispatch = dispatchToStores;
+  dispatchToStores.state = get();
 
   function notify() {
     debug('Notifying all listeners');
@@ -90,6 +83,16 @@ function createDispatcher(options) {
   function get() {
     return state;
   }
+
+  return {
+    addInterceptor: addInterceptor,
+    addStore: addStore,
+
+    dispatch: dispatch,
+
+    listen: listen,
+    get: get
+  };
 
 }
 
