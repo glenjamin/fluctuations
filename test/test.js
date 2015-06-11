@@ -248,6 +248,13 @@ describe("fluctuations", function() {
       expect(console.warn).to.have.callCount(1);
     });
 
+    it("should allow redispatch from interceptor to interceptor", function() {
+      flux.dispatch("HIJACK");
+      expect(interceptions).to.have.length(1); // captured interception
+      interceptions[0].redispatch("HIJACK");
+      expect(interceptions).to.have.length(2);
+    });
+
     it("should allow async stuff via interceptors", function(done) {
       flux.dispatch("HIJACK");
       expect(interceptions).to.have.length(1); // captured interception

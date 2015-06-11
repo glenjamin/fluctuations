@@ -70,6 +70,8 @@ function createDispatcher(options) {
       console.warn("Unknown action: %s", action, payload);
     }
   }
+  // Alternative interceptor API
+  dispatchToStores.redispatch = dispatch;
   dispatchToStores.dispatch = dispatchToStores;
   dispatchToStores.state = get();
 
