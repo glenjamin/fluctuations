@@ -288,8 +288,29 @@ describe("fluctuations", function() {
   });
 
   describe("multiple overlapping interceptors", function() {
-    it("should only call first matching interceptor");
-    it("should do everything else the same");
+    beforeEach(function() {
+      flux.addStore('n', fluctuations.createStore(
+        function() { return 0; },
+        {
+          INC: function(n) { return n + 1; },
+          DEC: function(n) { return n - 1; },
+        }
+      ));
+      flux.addInterceptor('one', fluctuations.createInterceptor({
+        DO_INC: function(dispatch) {
+          dispatch("INC");
+        }
+      }));
+      flux.addInterceptor('two', fluctuations.createInterceptor({
+        DO_INC: function(dispatch) {
+          dispatch("DEC");
+        }
+      }));
+    });
+    it("should only call first matching interceptor", function() {
+      flux.dispatch("DO_INC");
+      expect(flux.get().n).to.eql(1);
+    });
   });
 
   describe("rehydration", function() {
