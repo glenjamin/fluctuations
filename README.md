@@ -78,8 +78,6 @@ None yet, for now you'll have to rely on examples:
 * High level tests
 * Low level tests
 * Cycle detection?
-* Isomorphic example - done-ness?
-* Isomorphic HMR example
 * Benchmarking / profiling
 * Granular subscriptions
 * Docs docs docs docs docs

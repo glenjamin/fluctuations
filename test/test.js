@@ -110,9 +110,6 @@ describe("fluctuations", function() {
       flux.dispatch("NOTHING");
       expect(listener).to.have.callCount(0);
     });
-
-    it("should retain state when added again");
-    it("should use optional merge strategy on state when added again");
   });
 
   describe("multiple overlapping stores", function() {
