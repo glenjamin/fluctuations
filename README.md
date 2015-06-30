@@ -48,10 +48,10 @@ var store = fluctuations.createStore(
 );
 
 var interceptor = fluctuations.createInterceptor({
-    FETCH_MESSAGE: function(dispatch, payload) {
-        dispatch("FETCH_MESSAGE_BEGIN");
+    FETCH_MESSAGE: function(emit, payload) {
+        emit("FETCH_MESSAGE_BEGIN");
         setTimeout(function() {
-            dispatch("CHANGE_MESSAGE", { value: "whatever" });
+            emit("CHANGE_MESSAGE", { value: "whatever" });
         }, 2000);
     }
 });

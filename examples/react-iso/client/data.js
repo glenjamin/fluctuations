@@ -7,16 +7,16 @@ function addHandlers(obj) {
 
 /**
  * Turn a data description into bunch of store dispatches
- * @param {object} descriptor description of requested data
- * @param {function} dispatch dispatch data to stores
- * @param {function} callback to be called when complete
+ * @param {object} descriptor   description of requested data
+ * @param {function} emit       emit actions to stores
+ * @param {function} callback   to be called when complete
  */
 exports.fetch = fetch;
-function fetch(descriptor, dispatch, callback) {
+function fetch(descriptor, emit, callback) {
   var entities = Object.keys(descriptor);
   asyncEach(entities, (entity, next) => {
     if (handlers[entity]) {
-      return handlers[entity](descriptor[entity], dispatch, next);
+      return handlers[entity](descriptor[entity], emit, next);
     }
     console.warn("Unknown handler %s - ", entity, descriptor[entity]);
     return next();

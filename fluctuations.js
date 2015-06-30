@@ -31,18 +31,18 @@ function createDispatcher(options) {
   function dispatch(action, payload) {
     payload = typeof payload !== 'undefined' ? payload : {};
     if (!dispatchToInterceptors(action, payload)) {
-      dispatchToStores(action, payload);
+      emitToStores(action, payload);
     }
   }
 
   function dispatchToInterceptors(action, payload) {
     debug("Dispatching %s to interceptors", action);
     var intercepted = false;
-    dispatchToStores.state = get();
+    emitToStores.state = get();
     each(interceptors, function(interceptor, key) {
       if (interceptor.handlers[action]) {
         debug("Intercepted %s with interceptor '%s'", action, key);
-        interceptor.handlers[action](dispatchToStores, payload);
+        interceptor.handlers[action](emitToStores, payload);
         intercepted = true;
         return 'break';
       }
@@ -50,7 +50,7 @@ function createDispatcher(options) {
     return intercepted;
   }
 
-  function dispatchToStores(action, payload) {
+  function emitToStores(action, payload) {
     debug("Dispatching %s to stores", action);
 
     var handled = false;
@@ -71,9 +71,13 @@ function createDispatcher(options) {
     }
   }
   // Alternative interceptor API
-  dispatchToStores.redispatch = dispatch;
-  dispatchToStores.dispatch = dispatchToStores;
-  dispatchToStores.state = get();
+  emitToStores.redispatch = dispatch;
+  emitToStores.dispatch = function(action, payload) {
+    console.warn("Deprecated: use `emit` instead of `dispatch` in interceptor");
+    emitToStores(action, payload);
+  };
+  emitToStores.emit = emitToStores;
+  emitToStores.state = get();
 
   function notify() {
     debug('Notifying all listeners');

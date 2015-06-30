@@ -5,27 +5,27 @@ var swapi = require('../swapi');
 
 var handlers = exports.handlers = {};
 
-handlers.films = (query, dispatch, callback) => {
+handlers.films = (query, emit, callback) => {
   if (query === 'all') {
     swapi({ pathname: 'films/' }, (err, res, body) => {
       if (err) {
-        dispatch("FILMS_ERROR", err);
+        emit("FILMS_ERROR", err);
         return callback();
       }
-      dispatch("FILMS_DATA", body);
+      emit("FILMS_DATA", body);
       return callback();
     });
   } else {
     return callback();
   }
 };
-handlers.film = (id, dispatch, callback) => {
+handlers.film = (id, emit, callback) => {
   swapi({ pathname: 'films/' + id + '/' }, (err, res, body) => {
     if (err) {
-      dispatch("FILM_ERROR", {id, err});
+      emit("FILM_ERROR", {id, err});
       return callback();
     }
-    dispatch("FILM_DATA", {id, film: body});
+    emit("FILM_DATA", {id, film: body});
     return callback();
   });
 };

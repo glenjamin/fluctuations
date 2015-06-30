@@ -29,10 +29,10 @@ var store = fluctuations.createStore(
 );
 
 var interceptor = fluctuations.createInterceptor({
-  SLOW_INC: function(dispatch, payload) {
-    dispatch("INC_WAIT");
+  SLOW_INC: function(emit, payload) {
+    emit("INC_WAIT");
     setTimeout(function() {
-      dispatch("INC_DONE");
+      emit("INC_DONE");
     }, payload.delay || 1000);
   }
 });

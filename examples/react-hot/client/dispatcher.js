@@ -21,17 +21,17 @@ if (module.hot) {
 }
 
 dispatcher.addInterceptor('swapi', flux.createInterceptor({
-  FETCH(dispatch, type) {
-    dispatch("LOADING");
+  FETCH(emit, type) {
+    emit("LOADING");
     var options = {
       uri: "http://swapi.co/api/" + encodeURIComponent(type),
       json: true
     };
     request(options, (err, res, body) => {
       if (err) {
-        return dispatch("ERROR", err);
+        return emit("ERROR", err);
       }
-      dispatch("DATA_" + type.toUpperCase(), { data: body });
+      emit("DATA_" + type.toUpperCase(), { data: body });
     });
   }
 }));

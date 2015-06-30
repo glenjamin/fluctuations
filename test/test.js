@@ -199,23 +199,23 @@ describe("fluctuations", function() {
         }
       ));
       flux.addInterceptor('slow', fluctuations.createInterceptor({
-        INC: function(dispatch) {
-          dispatch("START_INC");
+        INC: function(emit) {
+          emit("START_INC");
         },
-        ADD: function(dispatch, n) {
-          while (n--) dispatch("INC");
+        ADD: function(emit, n) {
+          while (n--) emit("INC");
         },
-        SUB5: function(dispatch) {
-          dispatch("SUB", 5);
+        SUB5: function(emit) {
+          emit("SUB", 5);
         },
         AT_LEAST: function(dispatcher, n) {
           if (n > dispatcher.state.n) {
             var i = n - dispatcher.state.n;
-            while (i--) dispatcher.dispatch("INC");
+            while (i--) dispatcher.emit("INC");
           }
         },
-        HIJACK: function(dispatch) {
-          interceptions.push(dispatch);
+        HIJACK: function(emit) {
+          interceptions.push(emit);
         }
       }));
       s.stub(console, 'warn');
@@ -232,13 +232,13 @@ describe("fluctuations", function() {
       expect(storeInc).to.have.callCount(0);
     });
 
-    it("should dispatch from interceptor to store", function() {
+    it("should emit from interceptor to store", function() {
       flux.dispatch("INC");
       expect(listener).to.have.callCount(1);
       expect(flux.get().n).to.eql(0.1);
     });
 
-    it("should not dispatch from interceptor to interceptor", function() {
+    it("should not emit from interceptor to interceptor", function() {
       flux.dispatch("HIJACK");
       expect(interceptions).to.have.length(1); // captured interception
       interceptions[0]("HIJACK");
@@ -250,6 +250,22 @@ describe("fluctuations", function() {
       expect(interceptions).to.have.length(1); // captured interception
       interceptions[0].redispatch("HIJACK");
       expect(interceptions).to.have.length(2);
+    });
+
+    it("should warn when calling dispatch in interceptor", function() {
+      flux.dispatch("HIJACK");
+      expect(interceptions).to.have.length(1); // captured interception
+      interceptions[0].dispatch("INC");
+      expect(console.warn).to.have.callCount(1);
+      expect(console.warn).to.be.calledWithMatch(/deprecated/i);
+    });
+
+    it("should allow calling emit in interceptor to hit store", function() {
+      flux.dispatch("HIJACK");
+      expect(interceptions).to.have.length(1); // captured interception
+      interceptions[0].emit("INC");
+      expect(console.warn).to.have.callCount(0);
+      expect(flux.get().n).to.eql(1);
     });
 
     it("should allow async stuff via interceptors", function(done) {
@@ -271,7 +287,7 @@ describe("fluctuations", function() {
       expect(storeInc).to.have.callCount(5);
     });
 
-    it("should allow interceptors to dispatch payloads to stores", function() {
+    it("should allow interceptors to emit payloads to stores", function() {
       flux.dispatch("SUB5");
       expect(flux.get().n).to.eql(-5);
     });
@@ -297,13 +313,13 @@ describe("fluctuations", function() {
         }
       ));
       flux.addInterceptor('one', fluctuations.createInterceptor({
-        DO_INC: function(dispatch) {
-          dispatch("INC");
+        DO_INC: function(emit) {
+          emit("INC");
         }
       }));
       flux.addInterceptor('two', fluctuations.createInterceptor({
-        DO_INC: function(dispatch) {
-          dispatch("DEC");
+        DO_INC: function(emit) {
+          emit("DEC");
         }
       }));
     });

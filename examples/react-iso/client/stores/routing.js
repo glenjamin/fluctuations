@@ -7,37 +7,37 @@ var data = require('../data');
 
 var routes = require('../routes');
 
-function route(dispatch, path, {skipFetch} = {}) {
+function route(emit, path, {skipFetch} = {}) {
   var match = routes.match(path);
   if (!match) {
-    return dispatch("404");
+    return emit("404");
   }
   var {params, fn: component} = match;
   if (!component.fetchData || skipFetch) {
-    dispatchRoute();
+    emitRoute();
   } else {
-    dispatch("ROUTE_LOADING", path);
+    emit("ROUTE_LOADING", path);
     data.fetch(
       component.fetchData(params),
-      dispatch,
-      dispatchRoute
+      emit,
+      emitRoute
     );
   }
-  function dispatchRoute() {
-    dispatch("ROUTE", { path, params, component});
+  function emitRoute() {
+    emit("ROUTE", { path, params, component});
   }
 }
 
 exports.interceptor = flux.createInterceptor({
-  OPEN_URL(dispatch, path) {
-    route(dispatch, path);
+  OPEN_URL(emit, path) {
+    route(emit, path);
     history.pushState({}, '', path);
   },
-  SET_URL(dispatch, path) {
-    route(dispatch, path);
+  SET_URL(emit, path) {
+    route(emit, path);
   },
-  INIT_URL(dispatch, path) {
-    route(dispatch, path, {skipFetch: true});
+  INIT_URL(emit, path) {
+    route(emit, path, {skipFetch: true});
   }
 });
 
