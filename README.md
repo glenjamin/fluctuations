@@ -96,11 +96,69 @@ To make hot reloading easier, fluctuations minimises the number of places state 
 
 # Docs
 
-None yet, for now you'll have to rely on examples:
+In addition to these API docs, there are a few examples you can look at.
 
 * [Counter](examples/counter/) - Basic data handling
 * [React Hot](examples/react-hot/) - React w/ hot module reloading and async data fetching
 * [React Isomorphic](examples/react-iso) - React w/ hot module reloading, routing, route-aware async data fetching & server rendering
+
+## API
+
+### `fluctuations`
+
+```js
+var fluctuations = require('fluctuations');
+```
+
+#### `.createDispatcher(options)`
+
+Create yourself a shiny new dispatcher instance.
+
+* `options` *object* - additional creation options
+* `options.state` *object* - pass this to reuse state from a previous dispatcher
+
+Returns *Dispatcher*
+
+#### `.createStore(initial, handlers, merge)`
+
+Create yourself a shiny new store representation.
+
+Store representations by themselves don't do anything, they should be attached to your friendly neighbourhood dispatcher instance to make things work.
+
+* `initial` *function() => state* - will be called when attaching a store to a dispatcher. The return value will become the initial state.
+* `handlers` *object* - mapping of action-name to handler function, where handler functions are `function(state, payload) => newState`. See examples below.
+* `merge` (optional) *function(state, newState) => state* - will be called when a store is being replaced, and can be used to combine the old and new states. The return value will become the new store state.
+
+Returns *StoreSpec*
+
+##### Store Handlers
+
+Store handlers map incoming actions to state changes that should be made. The handler function will receive the current state of the store and any action payload, and should return a new state for the store.
+
+For example, this set of handlers will increment and decrement the a number in the store as actions are passed in.
+```js
+{
+    INC: function(state, n) {
+        return { n: state.n + n };
+    },
+    DEC: function(state, n) {
+        return { n: state.n - n };
+    }
+}
+```
+In general you are likely to want to use a merge function to ensure you don't replace properties you're not interested in, or look into using something like [Immutable](http://facebook.github.io/immutable-js/) here instead.
+
+#### `.createInterceptor(handlers)`
+
+Create yourself a shiny new interceptor representation.
+
+Interceptor representations by themselves don't do anything, they should be attached to your friendly neighbourhood dispatcher instance to make things work.
+
+* `handlers` *object* - mapping of action-name to handler function, where handler functions are `function(state, payload) => newState`. See examples below.
+
+Returns *InterceptorSpec*
+
+### dispatcher
 
 # TODO
 
