@@ -94,6 +94,19 @@ The simplest way to make code hot reloadable is to make it pure (stateless), as 
 
 To make hot reloading easier, fluctuations minimises the number of places state is held - everything is kept in the dispatcher. In addition, every time something is attached to the dispatcher it is required to pass a `key` which names it uniquely. This is used to ensure the same item is never duplicated.
 
+To hot reload fluctuations, you just need to re-use the dispatcher instance every time, like in the following webpack example:
+
+```js
+var dispatcher = flux.createDispatcher();
+if (module.hot) {
+  if (module.hot.data) {
+    dispatcher = module.hot.data.dispatcher;
+  }
+  module.hot.accept();
+  module.hot.dispose((data) => data.dispatcher = dispatcher);
+}
+```
+
 # Docs
 
 In addition to these API docs, there are a few examples you can look at.
@@ -114,10 +127,10 @@ var fluctuations = require('fluctuations');
 
 Create yourself a shiny new dispatcher instance.
 
-* `options` *object* - additional creation options
-* `options.state` *object* - pass this to reuse state from a previous dispatcher
+* `options` *{object}* - additional creation options
+* `options.state` *{object}* - pass this to reuse state from a previous dispatcher
 
-Returns *Dispatcher*
+Returns [*{Dispatcher}*](#dispatcher)
 
 #### `.createStore(initial, handlers, merge)`
 
@@ -125,11 +138,11 @@ Create yourself a shiny new store representation.
 
 Store representations by themselves don't do anything, they should be attached to your friendly neighbourhood dispatcher instance to make things work.
 
-* `initial` *function() => state* - will be called when attaching a store to a dispatcher. The return value will become the initial state.
-* `handlers` *object* - mapping of action-name to handler function, where handler functions are `function(state, payload) => newState`. See examples below.
-* `merge` (optional) *function(state, newState) => state* - will be called when a store is being replaced, and can be used to combine the old and new states. The return value will become the new store state.
+* `initial` *{function() => state}* - will be called when attaching a store to a dispatcher. The return value will become the initial state.
+* `handlers` *{object}* - mapping of action-name to handler function, where handler functions are *{function(state, payload) => newState}*. See [Store Handlers](#store-handlers) below.
+* `merge` (optional) *{function(state, newState) => state}* - will be called when a store is being replaced, and can be used to combine the old and new states. The return value will become the new store state.
 
-Returns *StoreSpec*
+Returns [*{StoreSpec}*](#addstorekey-store)
 
 ##### Store Handlers
 
@@ -154,17 +167,74 @@ Create yourself a shiny new interceptor representation.
 
 Interceptor representations by themselves don't do anything, they should be attached to your friendly neighbourhood dispatcher instance to make things work.
 
-* `handlers` *object* - mapping of action-name to handler function, where handler functions are `function(state, payload) => newState`. See examples below.
+* `handlers` *{object}* - mapping of action-name to handler function, where handler functions are `function(emit, payload)`. See [Interceptor Handlers](#interceptor-handlers) below.
 
-Returns *InterceptorSpec*
+Returns [*{InterceptorSpec}*](#addinterceptorkey-interceptor)
 
-### dispatcher
+#### Interceptor Handlers
+
+> TODO: flesh this out properly
+
+Handlers come in two flavours, the first is the simple common case, the second provides more flexibility.
+
+`function(emit, payload)`
+    * `emit = function(action, payload)` send action to stores
+    * `payload` the data for the incoming action
+
+`function(system, payload)`
+    * `system.emit = function(action, payload)` send action to stores
+    * `system.redispatch = function(action, payload)` send action back to dispatcher so it can be re-intercepted
+    * `system.state` the state of the system when the action was intercepted
+    * `payload` the data for the incoming action
+
+### `Dispatcher`
+
+The dispatcher is the central point of the application's data flow, everything else plugs into it.
+
+#### `.addStore(key, store)`
+
+Attach a *{StoreSpec}* as created by `createStore` into the dispatcher. This will delegate management of the value at `key` to the store's handlers.
+
+If attaching a store with the same `key` as a previous store, it will be overwritten, using the merge strategy to combine the new initial and the current state. This is very useful when hot reloading.
+
+* `key` *{string}* - unique name to identify this store
+* `store` *{StoreSpec}* - the store details, as produced by createStore
+
+#### `.addInterceptor(key, interceptor)`
+
+Attach an *{InterceptorSpec}* as create by `createInterceptor` into the dispatcher. This will cause the interceptor to capture any action matched by it's handlers, and allow it to emit multiple actions over time instead.
+
+If attaching an interceptor with the same `key` as a previous interceptor, it will be overwritten. This is very useful when hot reloading.
+
+#### `.dispatch(action, payload)`
+
+Send an action into the dispatcher.
+
+* `action` *{string}* - name of the action
+* `payload` *{any}* - extra data associated with the action, usually an object
+
+#### `.listen(key, listener)`
+
+Attach a listener to the dispatcher which will be called whenever the state of the system changes. It is expected that you'll want to call [get()](#get) within this listener.
+
+If attaching a listener with the same `key` as a previous listener, it will be overwritten. This can be very useful when hot reloading, as it means you don't need to clean up old listeners.
+
+* `key` *{string}* - unique name to identify this listener
+* `listener` *{function()}* - function to be called when state changes
+
+#### `.get()`
+
+Retreive the current state of the whole system. This will be an object with a `key` for each store containing the last known state of that store.
+
+Returns *{object}*
+
 
 # TODO
 
 * High level tests
 * Low level tests
 * Cycle detection?
+* Separate dispatcher definition and instances?
 * Benchmarking / profiling
 * Granular subscriptions
-* Docs docs docs docs docs
+* tidy up docs
