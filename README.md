@@ -178,14 +178,14 @@ Returns [*{InterceptorSpec}*](#addinterceptorkey-interceptor)
 Handlers come in two flavours, the first is the simple common case, the second provides more flexibility.
 
 `function(emit, payload)`
-    * `emit = function(action, payload)` send action to stores
-    * `payload` the data for the incoming action
+ * `emit = function(action, payload)` send action to stores
+ * `payload` the data for the incoming action
 
 `function(system, payload)`
-    * `system.emit = function(action, payload)` send action to stores
-    * `system.redispatch = function(action, payload)` send action back to dispatcher so it can be re-intercepted
-    * `system.state` the state of the system when the action was intercepted
-    * `payload` the data for the incoming action
+ * `system.emit = function(action, payload)` send action to stores
+ * `system.redispatch = function(action, payload)` send action back to dispatcher so it can be re-intercepted
+ * `system.state` the state of the system when the action was intercepted
+ * `payload` the data for the incoming action
 
 ### `Dispatcher`
 
